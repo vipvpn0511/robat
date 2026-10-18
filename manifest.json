@@ -1,0 +1,20 @@
+{
+  "name": "RoboMood موزیک‌پلیر احساسی",
+  "short_name": "RoboMood",
+  "description": "موزیک‌پلیر شیشه‌ای با ربات واکنش‌گرای موسیقی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d1d",
+  "theme_color": "#080d1d",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

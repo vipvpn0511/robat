@@ -1,1 +1,115 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#080d1d">
+  <meta name="description" content="موزیک‌پلیر شیشه‌ای با رباتی که به ریتم موسیقی واکنش نشان می‌دهد">
+  <title>RoboMood — موزیک‌پلیر احساسی</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="RoboMood خانه">
+        <span class="brand-mark"><span>R</span></span>
+        <span><b>RoboMood</b><small>موسیقی، یک احساس زنده</small></span>
+      </a>
+      <button class="icon-btn" id="themeBtn" aria-label="تغییر حالت نمایش" title="تغییر حالت نمایش">◐</button>
+    </header>
 
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><i class="live-dot"></i> ربات احساسی فعال</div>
+        <h1>هر آهنگ،<br><span>یک حال تازه.</span></h1>
+        <p>موسیقی را پخش کن؛ ربات با ریتم، شدت صدا و انرژی آهنگ واکنش نشان می‌دهد.</p>
+        <div class="hero-actions">
+          <label class="primary-btn file-label" for="fileInput">＋ انتخاب آهنگ</label>
+          <button class="secondary-btn" id="demoBtn">اجرای نمایشی</button>
+          <input id="fileInput" type="file" accept="audio/*" multiple hidden>
+        </div>
+        <p class="privacy-note">فایل‌های انتخابی فقط در همین مرورگر پخش می‌شوند.</p>
+      </div>
+
+      <div class="robot-stage" id="robotStage" data-mood="calm">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="stage-glow"></div>
+        <div class="robot">
+          <div class="antenna"><span></span></div>
+          <div class="robot-head">
+            <div class="ear ear-left"></div><div class="ear ear-right"></div>
+            <div class="face">
+              <div class="eyes"><i></i><i></i></div>
+              <div class="cheeks"><i></i><i></i></div>
+              <div class="mouth"></div>
+              <div class="face-shine"></div>
+            </div>
+          </div>
+          <div class="neck"></div>
+          <div class="robot-body">
+            <div class="chest-light"></div><div class="chest-line"></div>
+            <div class="body-label">RM<span>•</span>01</div>
+          </div>
+          <div class="arm arm-left"></div><div class="arm arm-right"></div>
+          <div class="floating-note note-a">♪</div><div class="floating-note note-b">♫</div>
+          <div class="spark spark-a">✦</div><div class="spark spark-b">✧</div>
+        </div>
+        <div class="stage-caption"><span class="mood-dot"></span><span id="moodName">آرام و متعادل</span><small id="moodSub">منتظر یک آهنگ تازه</small></div>
+      </div>
+    </section>
+
+    <section class="player-card glass">
+      <div class="section-heading"><div><span class="section-kicker">NOW PLAYING</span><h2>پخش‌کننده موسیقی</h2></div><span class="status-pill" id="playerStatus">آماده پخش</span></div>
+      <div class="track-row">
+        <div class="album-art" id="albumArt"><span>♫</span><i></i></div>
+        <div class="track-meta"><h3 id="trackTitle">هنوز آهنگی انتخاب نشده</h3><p id="trackArtist">یک فایل صوتی انتخاب کن تا شروع کنیم</p></div>
+        <button class="like-btn" id="likeBtn" aria-label="پسندیدن آهنگ">♡</button>
+      </div>
+      <audio id="audio" preload="metadata"></audio>
+      <div class="progress-wrap">
+        <input type="range" id="seekBar" min="0" max="1000" value="0" aria-label="موقعیت آهنگ">
+        <div class="time-row"><span id="currentTime">۰:۰۰</span><span id="duration">۰:۰۰</span></div>
+      </div>
+      <div class="controls">
+        <button class="control-btn" id="shuffleBtn" title="ترتیب تصادفی" aria-label="ترتیب تصادفی">⤨</button>
+        <button class="control-btn" id="prevBtn" title="قبلی" aria-label="آهنگ قبلی">▮◂</button>
+        <button class="play-btn" id="playBtn" aria-label="پخش یا توقف"><span id="playIcon">▶</span></button>
+        <button class="control-btn" id="nextBtn" title="بعدی" aria-label="آهنگ بعدی">▸▮</button>
+        <button class="control-btn" id="repeatBtn" title="تکرار" aria-label="تکرار">↻</button>
+      </div>
+      <div class="volume-row"><span>کم</span><span class="volume-icon">◖</span><input id="volumeBar" type="range" min="0" max="1" step=".01" value=".8" aria-label="بلندی صدا"><span>زیاد</span></div>
+      <div class="playlist-heading"><h3>صف پخش <span id="trackCount">۰ آهنگ</span></h3><button id="clearBtn" class="text-btn">پاک‌کردن فهرست</button></div>
+      <div class="playlist" id="playlist"><div class="empty-state"><span>♫</span><b>فهرستت اینجا ساخته می‌شود</b><small>با انتخاب چند آهنگ، صف پخش آماده می‌شود.</small></div></div>
+    </section>
+
+    <section class="analysis-grid">
+      <div class="glass analysis-card">
+        <div class="section-heading compact"><div><span class="section-kicker">LIVE AUDIO ANALYSIS</span><h2>حس‌سنج زنده</h2></div><span class="pulse-icon">⌁</span></div>
+        <div class="mood-line"><div><small>حال فعلی ربات</small><h3 id="analysisMood">در انتظار موسیقی</h3></div><span class="mood-emoji" id="moodEmoji">◌</span></div>
+        <div class="meter-label"><span>انرژی صدا</span><b id="energyValue">۰٪</b></div>
+        <div class="meter"><span id="energyMeter"></span></div>
+        <div class="meter-label"><span>ضرب و شدت تغییرات</span><b id="beatValue">۰٪</b></div>
+        <div class="meter"><span id="beatMeter"></span></div>
+        <div class="wave" id="wave" aria-label="نمایشگر شدت صدای زنده"></div>
+        <p class="analysis-footnote">حالت‌ها از انرژی و تغییرات لحظه‌ای صدا تخمین زده می‌شوند؛ این تحلیل، تشخیص قطعی احساس یا ژانر آهنگ نیست.</p>
+      </div>
+      <div class="glass mood-card">
+        <span class="section-kicker">MOOD MODES</span><h2>حالت‌های ربات</h2>
+        <div class="mood-list">
+          <div><span class="mood-swatch blue"></span><span><b>آرام</b><small>صدای نرم و انرژی کم</small></span><span>◌</span></div>
+          <div><span class="mood-swatch pink"></span><span><b>شاد</b><small>انرژی بالا و ضرب پرتحرک</small></span><span>✦</span></div>
+          <div><span class="mood-swatch purple"></span><span><b>رویایی</b><small>تغییرات ملایم و شناور</small></span><span>☾</span></div>
+          <div><span class="mood-swatch orange"></span><span><b>پرقدرت</b><small>شدت صدا و ضرب قوی</small></span><span>ϟ</span></div>
+        </div>
+        <div class="tip-box"><span>✧</span><p><b>نکته:</b> برای تحلیل واقعی، آهنگ را از داخل همین پلیر پخش کن و در صورت درخواست مرورگر، اجازه پخش صدا را بده.</p></div>
+      </div>
+    </section>
+
+    <footer><span class="footer-logo">RoboMood</span><span>ساخته‌شده برای حس‌کردن موسیقی</span><span class="footer-status"><i></i> پردازش محلی</span></footer>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
