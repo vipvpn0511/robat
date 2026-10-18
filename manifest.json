@@ -1,17 +1,17 @@
 {
-  "name": "RoboMood موزیک‌پلیر احساسی",
-  "short_name": "RoboMood",
-  "description": "موزیک‌پلیر شیشه‌ای با ربات واکنش‌گرای موسیقی",
+  "name": "RoboBuddy ربات تعاملی",
+  "short_name": "RoboBuddy",
+  "description": "ربات کوچولویی که با لمس تو واکنش نشان می‌دهد",
   "lang": "fa",
   "dir": "rtl",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#080d1d",
-  "theme_color": "#080d1d",
+  "background_color": "#080d1b",
+  "theme_color": "#080d1b",
   "icons": [
     {
-      "src": "./icon.svg",
+      "src": "./robot.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

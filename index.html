@@ -1,115 +1,102 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#080d1d">
-  <meta name="description" content="موزیک‌پلیر شیشه‌ای با رباتی که به ریتم موسیقی واکنش نشان می‌دهد">
-  <title>RoboMood — موزیک‌پلیر احساسی</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="./icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080d1b">
+<meta name="description" content="ربات کوچولوی تعاملی RoboBuddy">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./robot.svg" type="image/svg+xml">
+<title>RoboBuddy</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap');
+:root{--glow:#53dfff;--bg:#080d1b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100dvh;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#192a55 0%,#0c1530 35%,#070b17 75%);color:#edf5ff;font-family:Vazirmatn,Tahoma,sans-serif;display:grid;place-items:center;touch-action:manipulation}
+.stars{position:absolute;inset:0;overflow:hidden;pointer-events:none;background-image:radial-gradient(2px 2px at 18% 20%,#8feeff90 50%,transparent 100%),radial-gradient(1px 1px at 78% 15%,#fff9 50%,transparent 100%),radial-gradient(2px 2px at 84% 67%,#7faaff90 50%,transparent 100%),radial-gradient(1px 1px at 20% 77%,#fff8 50%,transparent 100%),radial-gradient(1px 1px at 55% 10%,#fff8 50%,transparent 100%)}
+.app{position:relative;width:100%;height:100dvh;max-width:480px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px calc(25px + env(safe-area-inset-bottom));isolation:isolate}
+.brand{position:absolute;top:calc(20px + env(safe-area-inset-top));display:flex;align-items:center;gap:8px;opacity:.86;font-size:13px;letter-spacing:.4px}.brand-mark{width:27px;height:27px;border-radius:9px;background:linear-gradient(135deg,#a7f2ff,#6f8cff);display:grid;place-items:center;color:#071327;font-weight:900}
+.status{position:absolute;top:calc(64px + env(safe-area-inset-top));display:flex;align-items:center;gap:7px;font-size:11px;color:#aabbe0;background:#ffffff08;border:1px solid #9bbcff20;border-radius:30px;padding:7px 12px}.dot{width:6px;height:6px;border-radius:50%;background:#62f4c4;box-shadow:0 0 10px #62f4c4}
+.scene{position:relative;width:min(88vw,350px);height:min(67vh,440px);display:grid;place-items:center;cursor:pointer;outline:none;user-select:none;touch-action:manipulation}
+.halo{position:absolute;width:82%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#477dff38,#44dfff0b 55%,transparent 72%);filter:blur(7px);transition:all .35s}
+.ring{position:absolute;width:94%;aspect-ratio:1;border:1px solid #8edbff26;border-radius:50%;transform:rotateX(67deg) rotate(-24deg);animation:spin 18s linear infinite}
+.ring:before{content:"";position:absolute;left:17%;top:7%;width:7px;height:7px;background:var(--glow);border-radius:50%;box-shadow:0 0 16px var(--glow)}
+.robot{position:relative;width:245px;height:315px;transform-origin:50% 75%;animation:idle 3.4s ease-in-out infinite;filter:drop-shadow(0 25px 25px #0008);transition:filter .25s}
+.antenna{position:absolute;top:0;left:119px;width:7px;height:31px;border-radius:8px;background:linear-gradient(#c4d8ff,#56dfff)}
+.antenna:after{content:"";position:absolute;width:17px;height:17px;left:-5px;top:-8px;border-radius:50%;background:#72efff;box-shadow:0 0 18px #5be8ff;animation:pulse 1.8s infinite}
+.head{position:absolute;top:27px;left:30px;width:185px;height:147px;border-radius:49px 49px 43px 43px;background:linear-gradient(140deg,#fff 0%,#c8d7f7 38%,#7389b9 100%);box-shadow:inset -9px -10px 15px #2b3b6255,inset 5px 6px 12px #fff;z-index:3}
+.ear{position:absolute;top:52px;width:24px;height:48px;border-radius:10px;background:linear-gradient(90deg,#5a6f9e,#e0edff);border:3px solid #d9e7ff}.ear.left{left:-14px}.ear.right{right:-14px}
+.face{position:absolute;inset:14px 13px 15px;border-radius:34px;background:linear-gradient(145deg,#152747,#071124);overflow:hidden;box-shadow:inset 0 0 24px #4d86e32a}
+.eyes{position:absolute;top:42px;left:0;right:0;display:flex;justify-content:center;gap:38px}
+.eye{width:18px;height:24px;border-radius:12px;background:linear-gradient(#a1fbff,#50a8ff);box-shadow:0 0 16px #57e7ff;transition:all .2s}
+.cheeks{position:absolute;top:76px;left:0;right:0;display:flex;justify-content:center;gap:77px;opacity:.55}.cheeks i{width:13px;height:7px;border-radius:50%;background:#ff82cf;filter:blur(3px)}
+.mouth{position:absolute;top:84px;left:calc(50% - 12px);width:24px;height:9px;border-bottom:3px solid #79f2ff;border-radius:0 0 50% 50%;filter:drop-shadow(0 0 5px #63eaff);transition:all .2s}
+.body{position:absolute;top:174px;left:57px;width:132px;height:116px;border-radius:35px 35px 29px 29px;background:linear-gradient(145deg,#f3f8ff,#aabde8 48%,#5b719e);box-shadow:inset -8px -8px 16px #263a6350,inset 5px 5px 12px #fff;z-index:2}
+.neck{position:absolute;top:164px;left:111px;width:26px;height:20px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,#6c80ac,#dbe8ff,#7185b3)}
+.chest{position:absolute;top:20px;left:54px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle,#e7ffff,#59eaff 40%,#668eff 75%);box-shadow:0 0 20px #57eaff;animation:pulse 2s infinite}
+.chest-line{position:absolute;top:62px;left:29px;right:29px;height:3px;border-radius:5px;background:linear-gradient(90deg,transparent,#738aff,#62eaff,transparent)}
+.label{position:absolute;bottom:13px;left:0;right:0;text-align:center;color:#273a63;font-size:10px;font-weight:800;letter-spacing:3px}
+.arm{position:absolute;top:194px;width:28px;height:75px;border-radius:18px;background:linear-gradient(90deg,#6077a7,#e4efff,#8299c7);transform-origin:top center;transition:transform .25s;z-index:1}.arm.left{left:38px;transform:rotate(17deg)}.arm.right{right:32px;transform:rotate(-17deg)}
+.float-icon{position:absolute;color:#8befff;font-size:25px;text-shadow:0 0 16px currentColor;animation:floatIcon 3s ease-in-out infinite}.f1{top:66px;left:4px}.f2{top:130px;right:2px;color:#c49aff;animation-delay:.7s}.f3{bottom:55px;left:15px;color:#ff86d6;animation-delay:1.2s}
+.message{min-height:54px;text-align:center;z-index:5;margin-top:0}.message h1{font-size:19px;margin:0 0 5px;font-weight:700}.message p{font-size:12px;line-height:1.8;color:#9eafd3;margin:0;max-width:290px}
+.hint{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom));font-size:10px;color:#7083ac;display:flex;align-items:center;gap:7px}.tap-ring{position:absolute;width:70px;height:70px;border:2px solid var(--glow);border-radius:50%;opacity:0;pointer-events:none;transform:scale(.3)}
+.scene.react .tap-ring{animation:ripple .55s ease-out}
+.scene.react .robot{animation:react .48s ease-out}
+.scene.happy .eye{height:17px;transform:rotate(-8deg)}.scene.happy .mouth{width:36px;height:14px;left:calc(50% - 18px);border-color:#ff8bd3}.scene.happy .halo{background:radial-gradient(circle,#ff69c955,#a85dff18 55%,transparent 72%)}
+.scene.love .eye{height:12px;border-radius:3px;transform:rotate(45deg);background:#ff76cb;box-shadow:0 0 18px #ff76cb}.scene.love .mouth{width:29px;height:12px;left:calc(50% - 14px);border-color:#ff83d0}.scene.love .halo{background:radial-gradient(circle,#ff70bd55,#a54dff18 55%,transparent 72%)}
+.scene.sleep .eye{height:4px;margin-top:10px}.scene.sleep .mouth{transform:rotate(180deg);top:77px}.scene.sleep .robot{animation:sleepy 4s ease-in-out infinite}
+.scene.power .eye{background:linear-gradient(#ffe7a3,#ff70a5);box-shadow:0 0 18px #ff70a5}.scene.power .arm.left{transform:rotate(70deg)}.scene.power .arm.right{transform:rotate(-65deg)}.scene.power .halo{background:radial-gradient(circle,#ff9b594f,#ff4e9b18 55%,transparent 72%)}
+.scene.surprise .eye{height:30px;width:22px}.scene.surprise .mouth{width:16px;height:16px;border:3px solid #79f2ff;border-radius:50%;left:calc(50% - 8px)}
+.scene.calm .robot{animation:idle 3.4s ease-in-out infinite}
+@keyframes idle{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-9px) rotate(.5deg)}}@keyframes react{0%{transform:scale(1)}45%{transform:scale(1.07) rotate(-2deg)}100%{transform:scale(1)}}@keyframes sleepy{0%,100%{transform:translateY(3px) rotate(1deg)}50%{transform:translateY(10px) rotate(-1deg)}}@keyframes spin{to{transform:rotateX(67deg) rotate(336deg)}}@keyframes pulse{0%,100%{opacity:.7;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}@keyframes floatIcon{0%,100%{transform:translateY(5px) rotate(-8deg);opacity:.6}50%{transform:translateY(-12px) rotate(8deg);opacity:1}}@keyframes ripple{to{opacity:0;transform:scale(1.7)}} 
+@media(max-height:680px){.scene{height:58vh;transform:scale(.85)}.message{margin-top:-12px}.hint{bottom:8px}.brand{top:8px}.status{top:47px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
 </head>
 <body>
-  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
-  <main class="app-shell">
-    <header class="topbar">
-      <a class="brand" href="#" aria-label="RoboMood خانه">
-        <span class="brand-mark"><span>R</span></span>
-        <span><b>RoboMood</b><small>موسیقی، یک احساس زنده</small></span>
-      </a>
-      <button class="icon-btn" id="themeBtn" aria-label="تغییر حالت نمایش" title="تغییر حالت نمایش">◐</button>
-    </header>
-
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow"><i class="live-dot"></i> ربات احساسی فعال</div>
-        <h1>هر آهنگ،<br><span>یک حال تازه.</span></h1>
-        <p>موسیقی را پخش کن؛ ربات با ریتم، شدت صدا و انرژی آهنگ واکنش نشان می‌دهد.</p>
-        <div class="hero-actions">
-          <label class="primary-btn file-label" for="fileInput">＋ انتخاب آهنگ</label>
-          <button class="secondary-btn" id="demoBtn">اجرای نمایشی</button>
-          <input id="fileInput" type="file" accept="audio/*" multiple hidden>
-        </div>
-        <p class="privacy-note">فایل‌های انتخابی فقط در همین مرورگر پخش می‌شوند.</p>
-      </div>
-
-      <div class="robot-stage" id="robotStage" data-mood="calm">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="stage-glow"></div>
-        <div class="robot">
-          <div class="antenna"><span></span></div>
-          <div class="robot-head">
-            <div class="ear ear-left"></div><div class="ear ear-right"></div>
-            <div class="face">
-              <div class="eyes"><i></i><i></i></div>
-              <div class="cheeks"><i></i><i></i></div>
-              <div class="mouth"></div>
-              <div class="face-shine"></div>
-            </div>
-          </div>
-          <div class="neck"></div>
-          <div class="robot-body">
-            <div class="chest-light"></div><div class="chest-line"></div>
-            <div class="body-label">RM<span>•</span>01</div>
-          </div>
-          <div class="arm arm-left"></div><div class="arm arm-right"></div>
-          <div class="floating-note note-a">♪</div><div class="floating-note note-b">♫</div>
-          <div class="spark spark-a">✦</div><div class="spark spark-b">✧</div>
-        </div>
-        <div class="stage-caption"><span class="mood-dot"></span><span id="moodName">آرام و متعادل</span><small id="moodSub">منتظر یک آهنگ تازه</small></div>
-      </div>
-    </section>
-
-    <section class="player-card glass">
-      <div class="section-heading"><div><span class="section-kicker">NOW PLAYING</span><h2>پخش‌کننده موسیقی</h2></div><span class="status-pill" id="playerStatus">آماده پخش</span></div>
-      <div class="track-row">
-        <div class="album-art" id="albumArt"><span>♫</span><i></i></div>
-        <div class="track-meta"><h3 id="trackTitle">هنوز آهنگی انتخاب نشده</h3><p id="trackArtist">یک فایل صوتی انتخاب کن تا شروع کنیم</p></div>
-        <button class="like-btn" id="likeBtn" aria-label="پسندیدن آهنگ">♡</button>
-      </div>
-      <audio id="audio" preload="metadata"></audio>
-      <div class="progress-wrap">
-        <input type="range" id="seekBar" min="0" max="1000" value="0" aria-label="موقعیت آهنگ">
-        <div class="time-row"><span id="currentTime">۰:۰۰</span><span id="duration">۰:۰۰</span></div>
-      </div>
-      <div class="controls">
-        <button class="control-btn" id="shuffleBtn" title="ترتیب تصادفی" aria-label="ترتیب تصادفی">⤨</button>
-        <button class="control-btn" id="prevBtn" title="قبلی" aria-label="آهنگ قبلی">▮◂</button>
-        <button class="play-btn" id="playBtn" aria-label="پخش یا توقف"><span id="playIcon">▶</span></button>
-        <button class="control-btn" id="nextBtn" title="بعدی" aria-label="آهنگ بعدی">▸▮</button>
-        <button class="control-btn" id="repeatBtn" title="تکرار" aria-label="تکرار">↻</button>
-      </div>
-      <div class="volume-row"><span>کم</span><span class="volume-icon">◖</span><input id="volumeBar" type="range" min="0" max="1" step=".01" value=".8" aria-label="بلندی صدا"><span>زیاد</span></div>
-      <div class="playlist-heading"><h3>صف پخش <span id="trackCount">۰ آهنگ</span></h3><button id="clearBtn" class="text-btn">پاک‌کردن فهرست</button></div>
-      <div class="playlist" id="playlist"><div class="empty-state"><span>♫</span><b>فهرستت اینجا ساخته می‌شود</b><small>با انتخاب چند آهنگ، صف پخش آماده می‌شود.</small></div></div>
-    </section>
-
-    <section class="analysis-grid">
-      <div class="glass analysis-card">
-        <div class="section-heading compact"><div><span class="section-kicker">LIVE AUDIO ANALYSIS</span><h2>حس‌سنج زنده</h2></div><span class="pulse-icon">⌁</span></div>
-        <div class="mood-line"><div><small>حال فعلی ربات</small><h3 id="analysisMood">در انتظار موسیقی</h3></div><span class="mood-emoji" id="moodEmoji">◌</span></div>
-        <div class="meter-label"><span>انرژی صدا</span><b id="energyValue">۰٪</b></div>
-        <div class="meter"><span id="energyMeter"></span></div>
-        <div class="meter-label"><span>ضرب و شدت تغییرات</span><b id="beatValue">۰٪</b></div>
-        <div class="meter"><span id="beatMeter"></span></div>
-        <div class="wave" id="wave" aria-label="نمایشگر شدت صدای زنده"></div>
-        <p class="analysis-footnote">حالت‌ها از انرژی و تغییرات لحظه‌ای صدا تخمین زده می‌شوند؛ این تحلیل، تشخیص قطعی احساس یا ژانر آهنگ نیست.</p>
-      </div>
-      <div class="glass mood-card">
-        <span class="section-kicker">MOOD MODES</span><h2>حالت‌های ربات</h2>
-        <div class="mood-list">
-          <div><span class="mood-swatch blue"></span><span><b>آرام</b><small>صدای نرم و انرژی کم</small></span><span>◌</span></div>
-          <div><span class="mood-swatch pink"></span><span><b>شاد</b><small>انرژی بالا و ضرب پرتحرک</small></span><span>✦</span></div>
-          <div><span class="mood-swatch purple"></span><span><b>رویایی</b><small>تغییرات ملایم و شناور</small></span><span>☾</span></div>
-          <div><span class="mood-swatch orange"></span><span><b>پرقدرت</b><small>شدت صدا و ضرب قوی</small></span><span>ϟ</span></div>
-        </div>
-        <div class="tip-box"><span>✧</span><p><b>نکته:</b> برای تحلیل واقعی، آهنگ را از داخل همین پلیر پخش کن و در صورت درخواست مرورگر، اجازه پخش صدا را بده.</p></div>
-      </div>
-    </section>
-
-    <footer><span class="footer-logo">RoboMood</span><span>ساخته‌شده برای حس‌کردن موسیقی</span><span class="footer-status"><i></i> پردازش محلی</span></footer>
-  </main>
-  <script src="./app.js"></script>
-</body>
-</html>
+<div class="stars"></div>
+<main class="app">
+  <div class="brand"><span class="brand-mark">R</span><b>RoboBuddy</b></div>
+  <div class="status"><i class="dot"></i><span id="status">منتظر لمس توام</span></div>
+  <div class="scene calm" id="scene" role="button" tabindex="0" aria-label="برای واکنش ربات لمس کن">
+    <div class="halo"></div><div class="ring"></div><div class="tap-ring"></div>
+    <div class="robot">
+      <div class="antenna"></div>
+      <div class="head"><div class="ear left"></div><div class="ear right"></div><div class="face"><div class="eyes"><i class="eye"></i><i class="eye"></i></div><div class="cheeks"><i></i><i></i></div><div class="mouth"></div></div></div>
+      <div class="neck"></div><div class="body"><div class="chest"></div><div class="chest-line"></div><div class="label">RB • 01</div></div>
+      <div class="arm left"></div><div class="arm right"></div>
+      <span class="float-icon f1">✦</span><span class="float-icon f2">♫</span><span class="float-icon f3">♥</span>
+    </div>
+  </div>
+  <div class="message"><h1 id="title">سلام! من ربات کوچولوی توام</h1><p id="desc">روی من بزن؛ می‌خندم، ذوق می‌کنم یا حالت‌های تازه نشان می‌دهم.</p></div>
+  <div class="hint">✧ <span>برای دیدن حالت‌های مختلف، چند بار لمس کن</span> ✧</div>
+</main>
+<script>
+(() => {
+ const scene=document.getElementById('scene'), title=document.getElementById('title'), desc=document.getElementById('desc'), status=document.getElementById('status');
+ const moods=[
+  {id:'happy',title:'وای! خوشحالم!',desc:'این لبخند مخصوص توئه!',status:'حالت شاد فعال شد'},
+  {id:'love',title:'دوستت دارم!',desc:'یک قلب کوچولو از طرف من برای تو.',status:'حالت مهربون فعال شد'},
+  {id:'surprise',title:'اوه! چی شد؟',desc:'هر بار یه چیز تازه غافلگیرم می‌کنه!',status:'حالت تعجب فعال شد'},
+  {id:'power',title:'بزن بریم!',desc:'شارژم پره؛ آماده‌ی حرکت و هیجانم!',status:'حالت پرانرژی فعال شد'},
+  {id:'sleep',title:'یه کم خوابم میاد…',desc:'اگه دوباره لمس کنی بیدار می‌شم!',status:'حالت خواب‌آلود فعال شد'},
+  {id:'calm',title:'کنارت آرومم',desc:'اینجام؛ هر وقت خواستی دوباره لمس کن.',status:'حالت آرام فعال شد'}
+ ];
+ let index=-1, resetTimer;
+ function react(){
+   index=(index+1)%moods.length;const m=moods[index];
+   scene.classList.remove('react','happy','love','surprise','power','sleep','calm');
+   void scene.offsetWidth;scene.classList.add('react',m.id);
+   title.textContent=m.title;desc.textContent=m.desc;status.textContent=m.status;
+   if(navigator.vibrate)navigator.vibrate(22);
+   clearTimeout(resetTimer);
+   resetTimer=setTimeout(()=>{scene.classList.remove('react');},600);
+ }
+ scene.addEventListener('pointerdown',e=>{e.preventDefault();react();});
+ scene.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();react();}});
+ if('serviceWorker' in navigator && location.protocol!=='file:'){
+   addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+ }
+})();
+</script>
+</body></html>
